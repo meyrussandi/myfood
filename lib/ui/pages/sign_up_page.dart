@@ -1,21 +1,63 @@
 part of 'pages.dart';
 
-class SignInPage extends StatefulWidget {
+
+class SignUpPage extends StatefulWidget {
   @override
-  _SignInPageState createState() => _SignInPageState();
+  _SignUpPageState createState() => _SignUpPageState();
 }
 
-class _SignInPageState extends State<SignInPage> {
+class _SignUpPageState extends State<SignUpPage> {
   @override
   Widget build(BuildContext context) {
     TextEditingController emailController = TextEditingController();
     TextEditingController passwordController = TextEditingController();
-    bool isLoading = false;
+    TextEditingController nameController = TextEditingController();
     return GeneralPage(
-      title: " Sign In",
-      subTitle: 'Do you miss your food?',
+      title: "Sign Up",
+      subTitle: 'Register and find eat',
+      onBackPress: (){
+        Get.back();
+      },
       child: Column(
         children: [
+          Container(
+            width: 110,
+            height: 110,
+            margin: EdgeInsets.only(top: 26),
+            padding: EdgeInsets.all(10),
+            decoration: BoxDecoration(image: DecorationImage(image: AssetImage('assets/photo_border.png'))),
+            child: Container(
+              decoration: BoxDecoration(shape: BoxShape.circle,
+              image: DecorationImage(image: NetworkImage(
+                'https://disk.mediaindonesia.com/thumbs/1800x1200/news/2018/10/6d6c224641cdcff679e89c90ba2f7b8c.jpg'
+              ), fit: BoxFit.cover)
+              ),
+            ),
+          ),
+          Container(
+            width: double.infinity,
+            margin: EdgeInsets.fromLTRB(defaultMargin, 16, defaultMargin, 6),
+            child: Text(
+              "Full Name",
+              style: blackTextFont.copyWith(
+                  fontSize: 16, fontWeight: FontWeight.w500),
+            ),
+          ),
+          Container(
+            width: double.infinity,
+            margin: EdgeInsets.symmetric(horizontal: defaultMargin),
+            padding: EdgeInsets.symmetric(horizontal: 10),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: blackColor)),
+            child: TextField(
+              controller: emailController,
+              decoration: InputDecoration(
+                  border: InputBorder.none,
+                  hintStyle: greyTextFont,
+                  hintText: 'type your full name'),
+            ),
+          ),
           Container(
             width: double.infinity,
             margin: EdgeInsets.fromLTRB(defaultMargin, 20, defaultMargin, 6),
@@ -64,39 +106,17 @@ class _SignInPageState extends State<SignInPage> {
                   hintText: 'type your password'),
             ),
           ),
-          Container(
-            width: double.infinity,
-            height: 45,
-            margin: EdgeInsets.only(top: 24),
-            padding: EdgeInsets.symmetric(horizontal: defaultMargin),
-            child: isLoading
-                ? SpinKitWave(
-                    size: 45,
-                    color: secondColor,
-                  )
-                : ElevatedButton(
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                        elevation: 0, primary: mainColor),
-                    child: Text(
-                      "Sign In",
-                      style:
-                          whiteTextFont.copyWith(fontWeight: FontWeight.w500),
-                    ),
-                  ),
-          ),
+
           Container(
             width: double.infinity,
             height: 45,
             margin: EdgeInsets.only(top: 24),
             padding: EdgeInsets.symmetric(horizontal: defaultMargin),
             child: ElevatedButton(
-              onPressed: () {
-                Get.to(()=>SignUpPage());
-              },
-              style: ElevatedButton.styleFrom(elevation: 0, primary: greyColor),
+              onPressed: () {},
+              style: ElevatedButton.styleFrom(elevation: 0, primary: mainColor),
               child: Text(
-                "Create new account",
+                "Continue",
                 style: whiteTextFont.copyWith(fontWeight: FontWeight.w500),
               ),
             ),

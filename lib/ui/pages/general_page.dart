@@ -19,8 +19,13 @@ class GeneralPage extends StatelessWidget {
     return Scaffold(
         body: Stack(
       children: [
-        Container(color: whiteColor,),
-        SafeArea(child: Container(color: backColor?? whiteColor,)),
+        Container(
+          color: whiteColor,
+        ),
+        SafeArea(
+            child: Container(
+          color: backColor ?? whiteColor,
+        )),
         SafeArea(
           child: ListView(
             children: [
@@ -33,18 +38,38 @@ class GeneralPage extends StatelessWidget {
                     color: whiteColor,
                     child: Row(
                       children: [
-                        onBackPress != null ? Container(
-                          width: 24,
-                          height: 24,
-                          margin: EdgeInsets.only(right: 26),
-                          child: Icon(Icons.arrow_back_ios,size: 24,),
-                        ):SizedBox(),
+                        onBackPress != null
+                            ? InkWell(
+                                onTap: () {
+                                  if (onBackPress != null) {
+                                    onBackPress();
+                                  }
+                                },
+                                child: Container(
+                                  width: 24,
+                                  height: 24,
+                                  margin: EdgeInsets.only(right: 26),
+                                  child: Icon(
+                                    Icons.arrow_back_ios,
+                                    size: 24,
+                                  ),
+                                ),
+                              )
+                            : SizedBox(),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text(title, style: blackTextFont.copyWith(fontSize: 22, fontWeight: FontWeight.w500),),
-                            Text(subTitle, style: greyTextFont.copyWith(fontWeight: FontWeight.w300),),
+                            Text(
+                              title,
+                              style: blackTextFont.copyWith(
+                                  fontSize: 22, fontWeight: FontWeight.w500),
+                            ),
+                            Text(
+                              subTitle,
+                              style: greyTextFont.copyWith(
+                                  fontWeight: FontWeight.w300),
+                            ),
                           ],
                         )
                       ],
