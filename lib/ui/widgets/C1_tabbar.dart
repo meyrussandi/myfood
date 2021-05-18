@@ -19,16 +19,18 @@ class C1Tabbar extends StatelessWidget {
             color: Color(0xffF2F2F2),
           ),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: titles
                 .map((e) => Padding(
-                      padding: EdgeInsets.only(left: (titles.first == e) ? defaultMargin : 0, right: defaultMargin),
+                      padding: EdgeInsets.only(
+                          left: (titles.first == e) ? defaultMargin : 0,
+                          right: defaultMargin),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           InkWell(
-                            onTap: (){
-                              if(onTap != null){
+                            onTap: () {
+                              if (onTap != null) {
                                 onTap(titles.indexOf(e));
                               }
                             },
@@ -43,9 +45,10 @@ class C1Tabbar extends StatelessWidget {
                             height: 3,
                             margin: EdgeInsets.only(top: 13),
                             decoration: BoxDecoration(
-                              color: (titles.indexOf(e)==selectedIndex)? Color(0xff020202) : Colors.transparent,
-                              borderRadius: BorderRadius.circular(1.5)
-                            ),
+                                color: (titles.indexOf(e) == selectedIndex)
+                                    ? Color(0xff020202)
+                                    : Colors.transparent,
+                                borderRadius: BorderRadius.circular(1.5)),
                           )
                         ],
                       ),

@@ -6,7 +6,7 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  int selectedPage=0;
+  int selectedPage = 0;
   PageController pageController = PageController(initialPage: 0);
 
   @override
@@ -17,27 +17,41 @@ class _MainPageState extends State<MainPage> {
           Container(
             color: Colors.white,
           ),
-          SafeArea(child:
-            Container(color: Color(0xffFAFAFC),),),
-          SafeArea(child: PageView(
+          SafeArea(
+            child: Container(
+              color: Color(0xffFAFAFC),
+            ),
+          ),
+          SafeArea(
+              child: PageView(
             controller: pageController,
-            onPageChanged: (index){
+            onPageChanged: (index) {
               setState(() {
                 selectedPage = index;
               });
             },
             children: [
               FoodPage(),
-              Center(child: Text("order"),),
-              Center(child: Text("profile"),),
+              Center(
+                child: OrderHistoryPage(),
+              ),
+              Center(
+                child: Text("profile"),
+              ),
             ],
           )),
-          Align(alignment: Alignment.bottomCenter,child: C1BottomNavbar(selectedIndex: selectedPage,onTap: (index){
-            setState(() {
-              selectedPage = index;
-            });
-            pageController.jumpToPage(selectedPage);
-          },),)
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: C1BottomNavbar(
+              selectedIndex: selectedPage,
+              onTap: (index) {
+                setState(() {
+                  selectedPage = index;
+                });
+                pageController.jumpToPage(selectedPage);
+              },
+            ),
+          )
         ],
       ),
     );
