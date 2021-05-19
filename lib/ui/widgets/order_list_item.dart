@@ -32,7 +32,7 @@ class OrderListCard extends StatelessWidget {
                 overflow: TextOverflow.clip,
               ),
               Text(
-                '${transaction.quantity} item(s) x ' +
+                '${transaction.quantity} item(s) • ' +
                     NumberFormat.currency(
                             symbol: 'IDR ', decimalDigits: 0, locale: 'id_ID')
                         .format(transaction.total),
@@ -49,10 +49,10 @@ class OrderListCard extends StatelessWidget {
               Text(convertDateTime(transaction.dateTime), style: greyTextFont),
               (transaction.status == TransactionStatus.cancelled)
                   ? Text('Cancelled',
-                      style: greyTextFont.copyWith(fontSize: 10))
+                      style: greyTextFont.copyWith(fontSize: 10, color: Colors.red))
                   : (transaction.status == TransactionStatus.pending)
                       ? Text('Pending',
-                          style: greyTextFont.copyWith(fontSize: 10))
+                          style: mainTextFont.copyWith(fontSize: 10))
                       : (transaction.status == TransactionStatus.on_delivered)
                           ? Text('On Delivered',
                               style: greyTextFont.copyWith(

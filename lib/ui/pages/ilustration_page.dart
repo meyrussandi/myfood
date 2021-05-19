@@ -55,9 +55,9 @@ class IlustrationPage extends StatelessWidget {
                   width: 200,
                   child: ElevatedButton(
                       style: ElevatedButton.styleFrom(primary: greyColor),
-                      onPressed: buttonTap2(),
+                      onPressed: buttonTap2,
                       child: Text(buttonTitle2,
-                          style: blackTextFont.copyWith(
+                          style: whiteTextFont.copyWith(
                               fontWeight: FontWeight.w500)))),
         ],
       ),

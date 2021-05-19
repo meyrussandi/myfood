@@ -6,11 +6,12 @@ class SignInPage extends StatefulWidget {
 }
 
 class _SignInPageState extends State<SignInPage> {
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  bool isLoading = false;
+
   @override
   Widget build(BuildContext context) {
-    TextEditingController emailController = TextEditingController();
-    TextEditingController passwordController = TextEditingController();
-    bool isLoading = false;
     return GeneralPage(
       title: "Sign In",
       subTitle: 'Do you miss your food?',
@@ -70,12 +71,29 @@ class _SignInPageState extends State<SignInPage> {
             margin: EdgeInsets.only(top: 24),
             padding: EdgeInsets.symmetric(horizontal: defaultMargin),
             child: isLoading
-                ? SpinKitWave(
-                    size: 45,
-                    color: secondColor,
-                  )
+                ? loadingIndicator
                 : ElevatedButton(
-                    onPressed: () {},
+                    onPressed: ()async {
+                      setState(() {
+                        isLoading = true;
+                      });
+
+                      await context.read<UserCubit>().signIn(emailController.text, passwordController.text);
+                      UserState state = context.read<UserCubit>().state;
+
+                      if(state is UserLoaded){
+                        context.read<FoodCubit>().getFoods();
+                        context.read<TransactionCubit>().getTransactions();
+                        Get.to(MainPage());
+                      }else{
+                        Get.snackbar("", '', backgroundColor: secondColor, icon: Icon(Icons.close, color: Colors.white,),
+                            titleText: Text("Sign In Failed", style: whiteTextFont.copyWith(fontWeight: FontWeight.w600),),
+                        messageText: Text((state as UserLoadingFailed).message, style: whiteTextFont,), );
+                        setState(() {
+                          isLoading = false;
+                        });
+                      }
+                    },
                     style: ElevatedButton.styleFrom(
                         elevation: 0, primary: mainColor),
                     child: Text(

@@ -15,3 +15,7 @@ TextStyle blackTextFont = GoogleFonts.poppins(color: blackColor);
 TextStyle whiteTextFont = GoogleFonts.poppins(color: whiteColor);
 TextStyle greyTextFont = GoogleFonts.poppins(color: greyColor);
 
+Widget loadingIndicator = SpinKitWave(
+  size: 45,
+  color: secondColor,
+);

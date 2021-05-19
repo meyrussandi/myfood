@@ -189,7 +189,12 @@ class _FoodDetailPageState extends State<FoodDetailPage> {
                               SizedBox(
                                 width: 163, height: 45,
                                 child: ElevatedButton(
-                                  onPressed: (){},
+                                  onPressed: (){
+                                    Get.to(PaymentPage(transaction: widget.transaction.copyWith(
+                                      quantity: quantity,
+                                      total: quantity * widget.transaction.food.price
+                                    ),));
+                                  },
                                   style: ElevatedButton.styleFrom(
                                     primary: mainColor
                                   ),

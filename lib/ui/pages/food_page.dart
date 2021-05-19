@@ -10,8 +10,8 @@ class _FoodPageState extends State<FoodPage> {
 
   @override
   Widget build(BuildContext context) {
-    double listItemWidth = MediaQuery.of(context).size.width - 2 * defaultMargin;
-
+    double listItemWidth =
+        MediaQuery.of(context).size.width - 2 * defaultMargin;
 
     return ListView(
       children: [
@@ -37,7 +37,8 @@ class _FoodPageState extends State<FoodPage> {
                       ),
                       Text(
                         "Let's get some food",
-                        style: greyTextFont.copyWith(fontWeight: FontWeight.w300),
+                        style:
+                            greyTextFont.copyWith(fontWeight: FontWeight.w300),
                       ),
                     ],
                   ),
@@ -49,7 +50,9 @@ class _FoodPageState extends State<FoodPage> {
                         image: DecorationImage(
                             fit: BoxFit.cover,
                             image: NetworkImage(
-                                'https://disk.mediaindonesia.com/thumbs/1800x1200/news/2018/10/6d6c224641cdcff679e89c90ba2f7b8c.jpg'))),
+                                (context.read<UserCubit>().state as UserLoaded)
+                                    .user
+                                    .picturePath))),
                   )
                 ],
               ),
@@ -58,20 +61,42 @@ class _FoodPageState extends State<FoodPage> {
             Container(
               height: 258,
               width: double.infinity,
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                children: [
-                  Row(
-                    children: dummyFoods
-                        .map((e) => Padding(
-                              padding: EdgeInsets.only(
-                                  left: e == dummyFoods.first ? defaultMargin : 0,
-                                  right: defaultMargin),
-                              child: FoodCard(e),
-                            ))
-                        .toList(),
-                  )
-                ],
+              child: BlocBuilder<FoodCubit, FoodState>(
+                builder: (context, state) {
+                  return (state is FoodLoaded)
+                      ? ListView(
+                          scrollDirection: Axis.horizontal,
+                          children: [
+                            Row(
+                              children: state.food
+                                  .map((e) => Padding(
+                                        padding: EdgeInsets.only(
+                                            left: e == state.food.first
+                                                ? defaultMargin
+                                                : 0,
+                                            right: defaultMargin),
+                                        child: InkWell(
+                                            onTap: () {
+                                              Get.to(FoodDetailPage(
+                                                transaction: Transaction(
+                                                    food: e,
+                                                    user: (context
+                                                            .read<UserCubit>()
+                                                            .state as UserLoaded)
+                                                        .user),
+                                                onBackPress: () {
+                                                  Get.back();
+                                                },
+                                              ));
+                                            },
+                                            child: FoodCard(e)),
+                                      ))
+                                  .toList(),
+                            )
+                          ],
+                        )
+                      : Center(child: loadingIndicator);
+                },
               ),
             ),
             //TAB OF FOOD
@@ -80,28 +105,49 @@ class _FoodPageState extends State<FoodPage> {
               color: Colors.white,
               child: Column(
                 children: [
-                  C1Tabbar(titles: ['New Taste', 'Popular', 'Recomended'],selectedIndex: selectedIndex,
-                  onTap: (index){
-                    setState(() {
-                      selectedIndex = index;
-                    });
-                  },
+                  C1Tabbar(
+                    titles: ['New Taste', 'Popular', 'Recomended'],
+                    selectedIndex: selectedIndex,
+                    onTap: (index) {
+                      setState(() {
+                        selectedIndex = index;
+                      });
+                    },
                   ),
-                  SizedBox(height: 16,),
-                  Builder(builder: (_){
-                    List<Food> foods = (selectedIndex == 0) ? dummyFoods : (selectedIndex == 1)? [] : [];
+                  SizedBox(
+                    height: 16,
+                  ),
+                  BlocBuilder<FoodCubit, FoodState>(builder: (_, state) {
+                    if (state is FoodLoaded) {
+                      List<Food> foods = state.food.where((element) =>
+                          element.foodType.contains((selectedIndex == 0)
+                              ? FoodType.new_food
+                              : (selectedIndex == 1)
+                                  ? FoodType.popular
+                                  : FoodType.recomended)).toList();
 
-                    return Column(
-                      children: foods.map((e) => Padding(
-                        padding:  EdgeInsets.fromLTRB(defaultMargin,0,defaultMargin, 16),
-                        child: FoodListCard(food: e, itemWidth: listItemWidth),
-                      )).toList(),
-                    );
+                      return Column(
+                        children: foods
+                            .map((e) => Padding(
+                                  padding: EdgeInsets.fromLTRB(
+                                      defaultMargin, 0, defaultMargin, 16),
+                                  child: FoodListCard(
+                                      food: e, itemWidth: listItemWidth),
+                                ))
+                            .toList(),
+                      );
+                    } else {
+                      return Center(
+                        child: loadingIndicator,
+                      );
+                    }
                   })
                 ],
               ),
             ),
-            SizedBox(height: 80,)
+            SizedBox(
+              height: 80,
+            )
           ],
         ),
       ],
